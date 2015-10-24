@@ -33,7 +33,6 @@ class GameWindow < Gosu::Window
 
     if @player #si existe jugador permite moverlo
       if Gosu::button_down? Gosu::KbSpace then
-        #p @player
         @projectiles << Projectile.new(@player)
       end
       if Gosu::button_down? Gosu::KbLeft or Gosu::button_down? Gosu::GpLeft then
@@ -47,6 +46,7 @@ class GameWindow < Gosu::Window
       end
       @player.move
       @projectiles.each {|projectile| projectile.move}
+      @projectiles.reject!{|projectile| projectile.dead?} #no elimina todos los proyectiles que dead? = false
     end
 
   end

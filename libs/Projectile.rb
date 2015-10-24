@@ -6,7 +6,7 @@ class Projectile
     @angle = origin_object.angle
     @speed_modifier = 7
     @image = Gosu::Image.new('assets/projectile.png')
-    @distance_traveled, @max_distance = 0, 50
+    @cooldown = 0
   end
   #--------------------------------------#
   def draw
@@ -18,12 +18,20 @@ class Projectile
     @y += -@speed_modifier*Math.cos(Math::PI/180*@angle)
     @x %= 1000
     @y %= 700
-    @distance_traveled += 1
-    kill if @distance_traveled > @max_distance
+    #@distance_traveled += 1
+    kill if @x < 5
+    kill if @x > 995
+    kill if @y > 695
+    kill if @y < 5
+
   end
   #--------------------------------------#
   def kill
     @alive = false
+  end
+  #--------------------------------------#
+  def dead? #Especificar si esta muerto
+    !@alive
   end
   #--------------------------------------#
 end
