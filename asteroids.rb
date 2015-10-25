@@ -17,6 +17,7 @@ class GameWindow < Gosu::Window
     @player.warp(650, 350)
     @game_in_progress = true
     @projectiles = []
+    @cooldown = 60
   end
 
   def Start_Screen
@@ -33,8 +34,13 @@ class GameWindow < Gosu::Window
 
     if @player #si existe jugador permite moverlo
       if Gosu::button_down? Gosu::KbSpace then
-        @projectiles << Projectile.new(@player)
+        if @cooldown < 25 #es el cooldown para que se pueda disparar, solo se puede cuando @cooldown > 25
+        else
+          @projectiles << Projectile.new(@player)
+          @cooldown = 0
+        end
       end
+
       if Gosu::button_down? Gosu::KbLeft or Gosu::button_down? Gosu::GpLeft then
         @player.turn_left
       end
@@ -44,6 +50,7 @@ class GameWindow < Gosu::Window
       if Gosu::button_down? Gosu::KbUp or Gosu::button_down? Gosu::GpButton0 then
         @player.accelerate
       end
+      @cooldown += 1 #Para el conteo que vuelve a permitir disparar
       @player.move
       @projectiles.each {|projectile| projectile.move}
       @projectiles.reject!{|projectile| projectile.dead?} #no elimina todos los proyectiles que dead? = false

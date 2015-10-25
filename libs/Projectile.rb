@@ -6,7 +6,6 @@ class Projectile
     @angle = origin_object.angle
     @speed_modifier = 7
     @image = Gosu::Image.new('assets/projectile.png')
-    @cooldown = 0
   end
   #--------------------------------------#
   def draw
