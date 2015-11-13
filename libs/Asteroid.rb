@@ -2,10 +2,9 @@ include Math
 
 class Asteroid
   #--------------------------------------#
-  def initialize(window)
-    @window = window
+  def initialize
     @alive = true
-    @image = Gosu::Image.new(window, "assets/Large_Asteroid.png", false)
+    @image = Gosu::Image.new("assets/Large_Asteroid.png")
     @x, @y, @angle = rand(1000), rand(350), rand(360)
     @speed_modifier = 1
   end
@@ -17,8 +16,8 @@ class Asteroid
   def move
     @x += @speed_modifier*Math.sin(Math::PI/180*@angle)
     @y += -@speed_modifier*Math.cos(Math::PI/180*@angle)
-    @x %= 640
-    @y %= 480
+    @x %= 1000
+    @y %= 700
   end
   #--------------------------------------#
   def setup(x, y, speed)
@@ -27,8 +26,12 @@ class Asteroid
     self
   end
   #--------------------------------------#
-  def self.spawn(window, count)
-    count.times.collect{Asteroid.new(window)}
+  def self.spawn(count)
+    count.times.collect{Asteroid.new}
+  end
+  #--------------------------------------#
+  def kill
+    @alive = false
   end
   #--------------------------------------#
 end

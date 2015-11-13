@@ -20,7 +20,7 @@ class GameWindow < Gosu::Window
     @projectiles = []
     @cooldown = 60 #Espacios que recorre una bala antes de podes disparar otra
     @asteroid_count = 3
-    @asteroids = Asteroid.spawn(self, @asteroid_count)
+    @asteroids = Asteroid.spawn(@asteroid_count)
   end
 
   def Start_Screen
@@ -65,7 +65,7 @@ class GameWindow < Gosu::Window
   end
   #--------------------------------------#
   def draw
-    
+
     unless @game_in_progress #Si el no se esta ejecutando muestra el menu
       @font.draw("ASTEROIDS", 260, 220, 50, 3, 3, Gosu::Color::rgb(255, 255, 255))
       @font.draw("Presiona 'p' Para Jugar", 300, 320, 50, 1, 1, Gosu::Color::rgb(13, 123, 255))
@@ -74,6 +74,8 @@ class GameWindow < Gosu::Window
     if @player #Si existe jugador lo dibuja
       @player.draw
       @projectiles.each {|projectile| projectile.draw}
+
+      @asteroids.each {|asteroid| asteroid.draw} #Dibuja todos los asteroides
     end
   end
   #--------------------------------------#
