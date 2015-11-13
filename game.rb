@@ -1,6 +1,7 @@
 require 'gosu'
 require './libs/Player.rb'
 require './libs/Projectile.rb'
+require './libs/Asteroid.rb'
 
 #........................................#
 class GameWindow < Gosu::Window
@@ -17,7 +18,9 @@ class GameWindow < Gosu::Window
     @player.warp(650, 350)
     @game_in_progress = true
     @projectiles = []
-    @cooldown = 60
+    @cooldown = 60 #Espacios que recorre una bala antes de podes disparar otra
+    @asteroid_count = 3
+    @asteroids = Asteroid.spawn(self, @asteroid_count)
   end
 
   def Start_Screen
@@ -54,11 +57,15 @@ class GameWindow < Gosu::Window
       @player.move
       @projectiles.each {|projectile| projectile.move}
       @projectiles.reject!{|projectile| projectile.dead?} #no elimina todos los proyectiles que dead? = false
+
+      @asteroids.each {|asteroid| asteroid.move}
+
     end
 
   end
   #--------------------------------------#
   def draw
+    
     unless @game_in_progress #Si el no se esta ejecutando muestra el menu
       @font.draw("ASTEROIDS", 260, 220, 50, 3, 3, Gosu::Color::rgb(255, 255, 255))
       @font.draw("Presiona 'p' Para Jugar", 300, 320, 50, 1, 1, Gosu::Color::rgb(13, 123, 255))

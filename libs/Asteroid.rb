@@ -1,11 +1,13 @@
-class Projectile
+include Math
+
+class Asteroid
   #--------------------------------------#
-  def initialize(origin_object)
+  def initialize(window)
+    @window = window
     @alive = true
-    @x, @y = origin_object.x, origin_object.y
-    @angle = origin_object.angle
-    @speed_modifier = 7
-    @image = Gosu::Image.new('assets/projectile1.png')
+    @image = Gosu::Image.new(window, "assets/Large_Asteroid.png", false)
+    @x, @y, @angle = rand(1000), rand(350), rand(360)
+    @speed_modifier = 1
   end
   #--------------------------------------#
   def draw
@@ -15,22 +17,18 @@ class Projectile
   def move
     @x += @speed_modifier*Math.sin(Math::PI/180*@angle)
     @y += -@speed_modifier*Math.cos(Math::PI/180*@angle)
-    @x %= 1000
-    @y %= 700
-    #@distance_traveled += 1
-    kill if @x < 5
-    kill if @x > 995
-    kill if @y > 695
-    kill if @y < 5
-
+    @x %= 640
+    @y %= 480
   end
   #--------------------------------------#
-  def kill
-    @alive = false
+  def setup(x, y, speed)
+    @x, @y, @speed_modifier = x, y, speed
+    @angle = rand(360)
+    self
   end
   #--------------------------------------#
-  def dead? #Especificar si esta muerto
-    !@alive
+  def self.spawn(window, count)
+    count.times.collect{Asteroid.new(window)}
   end
   #--------------------------------------#
 end
